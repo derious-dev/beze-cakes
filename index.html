@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Кондитерская Безе</title>
+<meta name="description" content="Домашняя кондитерская «Безе»: торты на заказ, бенто-торты и капкейки. Соберите торт онлайн и узнайте цену сразу.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Nunito:wght@400;600;700;800&family=Caveat:wght@600&display=swap">
+<style>
+/* Layout: pistachio counter with cocoa ink; the hero is a live cake the visitor builds, fillings are shown as cut slices. */
+:root {
+  --bg: #EDF1E4;
+  --surface: #FAFBF6;
+  --ink: #3B2418;
+  --muted: #6E5F55;
+  --line: #D6DBC8;
+  --berry: #C8285E;
+  --on-berry: #FFFFFF;
+  --pistachio: #B9C78A;
+  --deep: #3B2418;
+  --on-deep: #F6EFE8;
+  --on-deep-muted: #CDB9AA;
+  --plate: #FFFFFF;
+  --font-display: "Comfortaa", "Trebuchet MS", system-ui, sans-serif;
+  --font-body: "Nunito", "Segoe UI", system-ui, sans-serif;
+  --font-hand: "Caveat", "Segoe Print", cursive;
+  --radius: 22px;
+  --maxw: 1160px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1A1410; --surface: #231B16; --ink: #F2EBE3; --muted: #B5A79B; --line: #3A2E26;
+    --berry: #F05A8A; --on-berry: #2A0A16; --pistachio: #8FA05E; --deep: #110C09; --on-deep: #F2EBE3; --on-deep-muted: #B5A79B;
+    --plate: #E9E4DC; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1A1410; --surface: #231B16; --ink: #F2EBE3; --muted: #B5A79B; --line: #3A2E26;
+  --berry: #F05A8A; --on-berry: #2A0A16; --pistachio: #8FA05E; --deep: #110C09; --on-deep: #F2EBE3; --on-deep-muted: #B5A79B;
+  --plate: #E9E4DC; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 17px; line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+[hidden] { display: none !important; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 700; line-height: 1.12; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+p { margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 2.5px solid var(--berry); outline-offset: 3px; border-radius: 10px; }
+
+.wrap { max-width: var(--maxw); margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+@media (min-width: 720px) { .wrap { padding-left: max(32px, env(safe-area-inset-left, 0px)); padding-right: max(32px, env(safe-area-inset-right, 0px)); } }
+.hand { font: 600 26px/1 var(--font-hand); color: var(--berry); }
+.section { padding-block: 92px; }
+.section-head { display: grid; gap: 10px; margin-bottom: 44px; max-width: 640px; }
+.section-head h2 { font-size: clamp(30px, 4.2vw, 46px); }
+.section-head p { color: var(--muted); }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; text-decoration: none;
+  font: 800 16px/1 var(--font-body); padding: 17px 26px; border-radius: 999px; border: 2px solid transparent;
+  transition: transform .15s ease, filter .2s ease, background .2s ease, color .2s ease; }
+.btn:active { transform: translateY(1px); }
+.btn-berry { background: var(--berry); color: var(--on-berry); }
+.btn-berry:hover { filter: brightness(1.08); }
+.btn-berry:disabled { opacity: .6; cursor: default; }
+.btn-line { border-color: var(--ink); color: var(--ink); background: transparent; }
+.btn-line:hover { background: var(--ink); color: var(--bg); }
+
+/* Header */
+.header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.header .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 14px; }
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.logo svg { width: 36px; height: 36px; }
+.logo b { font: 700 24px/1 var(--font-display); }
+.nav { display: flex; gap: 26px; }
+.nav a { text-decoration: none; font-weight: 700; color: var(--muted); font-size: 15px; }
+.nav a:hover { color: var(--ink); }
+.header-right { display: flex; align-items: center; gap: 18px; }
+.header-phone { font-weight: 800; font-size: 15px; text-decoration: none; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.header .btn { padding: 12px 18px; font-size: 14px; }
+@media (max-width: 960px) { .nav { display: none; } }
+@media (max-width: 560px) { .header-phone { display: none; } }
+
+/* Hero */
+.hero { padding-block: 40px 80px; }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: center; }
+.hero-copy { display: grid; gap: 24px; min-width: 0; }
+.hero h1 { font-size: clamp(38px, 5.8vw, 70px); }
+.hero h1 span { color: var(--berry); }
+.hero-lead { font-size: clamp(17px, 1.6vw, 20px); color: var(--muted); max-width: 31em; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.badges { display: flex; flex-wrap: wrap; gap: 10px; }
+.badge { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 999px; background: var(--surface); border: 1.5px solid var(--line); font-weight: 700; font-size: 14px; }
+.badge i { width: 8px; height: 8px; border-radius: 50%; background: var(--pistachio); }
+.hero-cake { position: relative; min-width: 0; }
+.hero-cake svg { width: 100%; height: auto; display: block; max-width: 520px; margin: 0 auto; }
+.hero-note { position: absolute; right: 4%; top: 6%; transform: rotate(6deg); text-align: center; }
+.hero-note b { display: block; font: 600 30px/1 var(--font-hand); color: var(--berry); }
+.hero-note span { font-size: 14px; color: var(--muted); font-weight: 700; }
+@media (max-width: 860px) { .hero-grid { grid-template-columns: 1fr; gap: 24px; } .hero-cake { order: -1; } .hero-cake svg { max-width: 380px; } }
+
+/* Fillings */
+.fillings { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.filling { background: var(--surface); border-radius: var(--radius); padding: 22px; display: grid; gap: 16px; align-content: start; border: 1.5px solid transparent; }
+.filling:hover { border-color: var(--line); }
+.slice { height: 120px; border-radius: 14px 14px 8px 8px; overflow: hidden; display: flex; flex-direction: column; box-shadow: inset 0 -6px 0 rgba(0,0,0,.06); }
+.slice i { flex: 1; }
+.slice i.cream { flex: 0 0 18px; }
+.filling-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.filling h3 { font-size: 20px; }
+.filling .kg { font-weight: 800; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.filling p { color: var(--muted); font-size: 15px; }
+.filling .pick { justify-self: start; background: none; border: 0; padding: 0; color: var(--berry); font: 800 15px/1 var(--font-body); cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+@media (max-width: 900px) { .fillings { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 540px) { .fillings { grid-template-columns: 1fr; } }
+
+.extras { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 22px; }
+.extra { border: 2px dashed var(--line); border-radius: var(--radius); padding: 22px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.extra b { display: block; font-family: var(--font-display); font-size: 18px; }
+.extra span { color: var(--muted); font-size: 14px; }
+.extra em { font-style: normal; font-weight: 800; white-space: nowrap; }
+@media (max-width: 900px) { .extras { grid-template-columns: 1fr; } }
+
+/* Constructor */
+.builder-band { background: var(--deep); color: var(--on-deep); }
+.builder-band .section-head p { color: var(--on-deep-muted); }
+.builder { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+.b-panel { display: grid; gap: 28px; min-width: 0; }
+.b-field { display: grid; gap: 12px; min-width: 0; }
+.b-label { display: flex; justify-content: space-between; gap: 12px; font-weight: 800; font-size: 15px; }
+.b-label span { color: var(--on-deep-muted); font-weight: 600; }
+input[type="range"] { width: 100%; accent-color: var(--berry); height: 28px; }
+.opts { display: flex; flex-wrap: wrap; gap: 8px; }
+.opt { border: 2px solid color-mix(in srgb, var(--on-deep) 22%, transparent); background: transparent; color: var(--on-deep); font: 700 15px/1 var(--font-body); padding: 12px 16px; border-radius: 999px; cursor: pointer; display: inline-flex; gap: 8px; align-items: center; }
+.opt small { color: var(--on-deep-muted); font-weight: 600; font-size: 13px; }
+.opt[aria-pressed="true"] { border-color: var(--berry); background: color-mix(in srgb, var(--berry) 22%, transparent); }
+.opt .dot { width: 12px; height: 12px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0,0,0,.15); }
+.dates { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+.date { flex: 0 0 auto; display: grid; gap: 4px; min-width: 62px; padding: 10px 8px; text-align: center; border-radius: 16px; border: 2px solid color-mix(in srgb, var(--on-deep) 22%, transparent); background: transparent; color: var(--on-deep); cursor: pointer; font-family: var(--font-body); }
+.date small { font-size: 12px; font-weight: 700; color: var(--on-deep-muted); text-transform: uppercase; }
+.date b { font: 700 20px/1 var(--font-display); }
+.date[aria-pressed="true"] { border-color: var(--berry); background: var(--berry); color: var(--on-berry); }
+.date[aria-pressed="true"] small { color: var(--on-berry); opacity: .8; }
+
+.receipt { background: var(--surface); color: var(--ink); border-radius: var(--radius); padding: 26px; display: grid; gap: 16px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 84px); }
+.receipt svg { width: 100%; height: auto; max-height: 240px; display: block; }
+.r-lines { display: grid; }
+.r-line { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1.5px dashed var(--line); font-size: 15px; }
+.r-line span:first-child { color: var(--muted); }
+.r-line span:last-child { font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+.r-total { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.r-total span { color: var(--muted); font-weight: 700; }
+.r-total b { font: 700 34px/1 var(--font-display); font-variant-numeric: tabular-nums; }
+.r-form { display: grid; gap: 10px; }
+.r-form input { width: 100%; font: 600 16px/1.2 var(--font-body); color: var(--ink); background: var(--bg); border: 2px solid var(--line); border-radius: 14px; padding: 14px; }
+.r-form input:focus { outline: none; border-color: var(--berry); }
+.r-form input.invalid { border-color: var(--berry); }
+.err { color: var(--berry); font-weight: 700; font-size: 14px; }
+.r-note { font-size: 13px; color: var(--muted); text-align: center; }
+.success { text-align: center; display: grid; gap: 10px; justify-items: center; padding: 10px 0; }
+.success b { font: 700 22px/1.2 var(--font-display); }
+.success p { color: var(--muted); font-size: 15px; }
+@media (max-width: 900px) { .builder { grid-template-columns: 1fr; } .receipt { position: static; } }
+@media (max-width: 420px) { .receipt { padding: 20px 16px; } }
+
+/* Steps */
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; counter-reset: s; }
+.step { counter-increment: s; display: grid; gap: 10px; align-content: start; }
+.step::before { content: counter(s); width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--pistachio); color: #2B3A12; font: 700 18px/1 var(--font-display); }
+.step b { font: 700 19px/1.2 var(--font-display); }
+.step span { color: var(--muted); font-size: 15px; }
+@media (max-width: 900px) { .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .steps { grid-template-columns: 1fr; } }
+
+/* Reviews */
+.reviews { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.review { background: var(--surface); border-radius: var(--radius); padding: 26px; display: grid; gap: 14px; align-content: start; }
+.stars { color: var(--berry); letter-spacing: 3px; }
+.review blockquote { margin: 0; font-size: 17px; }
+.review footer { color: var(--muted); font-size: 14px; }
+.review footer b { color: var(--ink); }
+@media (max-width: 860px) { .reviews { grid-template-columns: 1fr; } }
+
+/* Contacts */
+.contacts { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+.c-list { margin: 0; display: grid; }
+.c-item { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 16px; padding: 16px 0; border-bottom: 1.5px dashed var(--line); }
+.c-item dt { font-weight: 800; color: var(--muted); font-size: 14px; }
+.c-item dd { margin: 0; font-weight: 700; }
+.c-item dd span { display: block; font-weight: 500; font-size: 14px; color: var(--muted); }
+.c-card { background: var(--berry); color: var(--on-berry); border-radius: 28px; padding: 36px; display: grid; gap: 16px; }
+.c-card h3 { font-size: 30px; }
+.c-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.c-card .btn-light { background: var(--on-berry); color: var(--berry); }
+.c-card .btn-outline { border-color: var(--on-berry); color: var(--on-berry); background: transparent; }
+@media (max-width: 860px) { .contacts { grid-template-columns: 1fr; } }
+@media (max-width: 520px) { .c-item { grid-template-columns: 1fr; gap: 2px; } .c-card { padding: 26px 20px; } }
+
+.footer { padding-block: 30px; color: var(--muted); font-size: 14px; border-top: 1.5px dashed var(--line); }
+.footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+
+.cake-tier { transition: all .35s ease; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .btn, .cake-tier { transition: none; } }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="wrap">
+    <a class="logo" href="#top">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4c-3 5-12 8-12 18a12 12 0 0 0 24 0C32 12 23 9 20 4z" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round"/><path d="M14 23c2 4 8 5 11 1" fill="none" stroke="var(--berry)" stroke-width="2.5" stroke-linecap="round"/></svg>
+      <b>Безе</b>
+    </a>
+    <nav class="nav" aria-label="Разделы">
+      <a href="#fillings">Начинки</a>
+      <a href="#builder">Собрать торт</a>
+      <a href="#how">Как заказать</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+    <div class="header-right">
+      <a class="header-phone" href="tel:+79000000000">+7 900 000-00-00</a>
+      <a class="btn btn-berry" href="#builder">Заказать торт</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <div class="hand">домашняя кондитерская</div>
+        <h1>Торт к вашему празднику <span>за два дня</span></h1>
+        <p class="hero-lead">Пеку на натуральных сливках и масле 82%, без маргарина и консервантов. Соберите торт прямо на сайте: цена посчитается сразу, без переписки.</p>
+        <div class="hero-actions">
+          <a class="btn btn-berry" href="#builder">Собрать торт</a>
+          <a class="btn btn-line" href="#fillings">Смотреть начинки</a>
+        </div>
+        <div class="badges">
+          <span class="badge"><i></i>от 1,5 кг</span>
+          <span class="badge"><i></i>Дегустация начинок</span>
+          <span class="badge"><i></i>Доставка по городу</span>
+        </div>
+      </div>
+      <div class="hero-cake">
+        <svg id="heroCake" viewBox="0 -30 400 380" role="img" aria-label="Торт из конструктора"></svg>
+        <div class="hero-note"><b>от 2 000 ₽</b><span>за килограмм</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="fillings" style="padding-top: 0;">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="hand">в разрезе</div>
+        <h2>Начинки</h2>
+        <p>Все начинки можно попробовать на дегустации: шесть мини-кусочков за 600 ₽, при заказе торта эта сумма вычитается.</p>
+      </div>
+      <div class="fillings" id="fillingList"></div>
+      <div class="extras">
+        <div class="extra"><div><b>Бенто-торт</b><span>Мини-торт на 2–3 человека, 450 г</span></div><em>1 400 ₽</em></div>
+        <div class="extra"><div><b>Капкейки</b><span>От 6 штук, с любой начинкой</span></div><em>220 ₽/шт</em></div>
+        <div class="extra"><div><b>Трайфлы</b><span>Десерт в стаканчике, от 6 штук</span></div><em>250 ₽/шт</em></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="builder-band section" id="builder">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="hand">конструктор</div>
+        <h2>Соберите свой торт</h2>
+        <p>Выберите количество гостей, начинку и декор. Вес посчитается сам, из расчёта 150 г на человека.</p>
+      </div>
+      <div class="builder">
+        <div class="b-panel">
+          <div class="b-field">
+            <label class="b-label" for="guests">Гостей <span id="guestsOut">12 человек</span></label>
+            <input type="range" id="guests" min="6" max="60" step="1" value="12">
+          </div>
+          <div class="b-field">
+            <span class="b-label" id="fLabel">Начинка</span>
+            <div class="opts" id="fillOpts" role="group" aria-labelledby="fLabel"></div>
+          </div>
+          <div class="b-field">
+            <span class="b-label" id="dLabel">Декор <span>можно несколько</span></span>
+            <div class="opts" id="decorOpts" role="group" aria-labelledby="dLabel"></div>
+          </div>
+          <div class="b-field">
+            <span class="b-label" id="dateLabel">Когда нужен торт <span>не раньше чем через 2 дня</span></span>
+            <div class="dates" id="dates" role="group" aria-labelledby="dateLabel"></div>
+          </div>
+        </div>
+
+        <aside class="receipt" aria-live="polite">
+          <svg id="cake" viewBox="0 -30 400 380" role="img" aria-label="Ваш торт"></svg>
+          <div class="r-lines">
+            <div class="r-line"><span>Вес</span><span id="rWeight">—</span></div>
+            <div class="r-line"><span>Ярусы</span><span id="rTiers">—</span></div>
+            <div class="r-line"><span>Начинка</span><span id="rFill">—</span></div>
+            <div class="r-line"><span>Декор</span><span id="rDecor">—</span></div>
+            <div class="r-line"><span>Дата</span><span id="rDate">—</span></div>
+          </div>
+          <div class="r-total"><span>Итого</span><b id="rTotal">—</b></div>
+          <form class="r-form" id="orderForm" novalidate>
+            <div id="formFields" style="display: grid; gap: 10px;">
+              <label for="name" style="display:contents"><span hidden>Имя</span><input type="text" id="name" autocomplete="given-name" placeholder="Ваше имя"></label>
+              <label for="phone" style="display:contents"><span hidden>Телефон</span><input type="tel" id="phone" autocomplete="tel" placeholder="+7 (___) ___-__-__"></label>
+              <p class="err" id="err" hidden></p>
+              <button class="btn btn-berry" type="submit" id="submit">Оформить заказ</button>
+            </div>
+            <span class="r-note">Предоплата 30% после согласования эскиза</span>
+          </form>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="how">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="hand">просто</div>
+        <h2>Как заказать</h2>
+      </div>
+      <ol class="steps">
+        <li class="step"><b>Соберите торт</b><span>В конструкторе или напишите, что хотите, в мессенджер.</span></li>
+        <li class="step"><b>Эскиз</b><span>Пришлите картинку-референс, я нарисую эскиз и пришлю на согласование.</span></li>
+        <li class="step"><b>Предоплата 30%</b><span>Бронирует дату. Остаток при получении торта.</span></li>
+        <li class="step"><b>Получение</b><span>Самовывоз бесплатно или доставка по городу за 400 ₽ в термосумке.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="reviews" style="padding-top: 0;">
+    <div class="wrap">
+      <div class="section-head"><div class="hand">отзывы</div><h2>Что говорят после праздника</h2></div>
+      <div class="reviews">
+        <article class="review"><div class="stars" aria-label="5 из 5">★★★★★</div><blockquote>Заказывали «Фисташку-малину» на юбилей мамы. Гости просили контакт кондитера, торт съели до последней крошки.</blockquote><footer><b>Ольга</b> · торт на 25 гостей</footer></article>
+        <article class="review"><div class="stars" aria-label="5 из 5">★★★★★</div><blockquote>Эскиз прислали в тот же день, торт получился точь-в-точь как на картинке. Сын был в восторге от фигурки.</blockquote><footer><b>Ирина</b> · детский торт</footer></article>
+        <article class="review"><div class="stars" aria-label="5 из 5">★★★★★</div><blockquote>Беру бенто-торты на каждый праздник в офис. Не приторные, крем не жирный, всегда вовремя.</blockquote><footer><b>Кирилл</b> · бенто-торты</footer></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contacts" style="padding-top: 0;">
+    <div class="wrap contacts">
+      <div>
+        <div class="section-head" style="margin-bottom: 16px;"><div class="hand">контакты</div><h2>Где забрать</h2></div>
+        <dl class="c-list">
+          <div class="c-item"><dt>Самовывоз</dt><dd>мкр. Солнечный, ул. Цветочная, 5<span>Точное время согласуем заранее</span></dd></div>
+          <div class="c-item"><dt>Доставка</dt><dd>По городу 400 ₽<span>Бесплатно при заказе от 4 кг</span></dd></div>
+          <div class="c-item"><dt>Приём заказов</dt><dd>Ежедневно 9:00–21:00<span>Минимум за 2 дня до праздника</span></dd></div>
+        </dl>
+      </div>
+      <div class="c-card">
+        <h3>Есть картинка торта мечты?</h3>
+        <p>Пришлите её в мессенджер, я посчитаю цену и предложу начинку под ваш праздник.</p>
+        <div class="c-actions">
+          <a class="btn btn-light" href="https://wa.me/" target="_blank" rel="noopener">Написать в WhatsApp</a>
+          <a class="btn btn-outline" href="https://t.me/" target="_blank" rel="noopener">Telegram</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <span>© 2026 Домашняя кондитерская «Безе»</span>
+    <span>Демо-сайт для портфолио: название, контакты и отзывы — пример</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const rub = n => Math.round(n).toLocaleString("ru-RU").replace(/ /g, " ") + " ₽";
+  const FILLINGS = [
+    { id: "velvet", name: "Красный бархат", desc: "Красные бисквиты, сливочно-сырный крем, немного какао", kg: 2200, layers: ["#A3243B","#F4EDE4","#A3243B","#F4EDE4","#A3243B"], cream: "#F4EDE4", drip: "#A3243B" },
+    { id: "pistachio", name: "Фисташка-малина", desc: "Фисташковый бисквит, малиновое конфи, крем на сливках", kg: 2600, layers: ["#BFCB8E","#D6336C","#BFCB8E","#F1E9D8","#BFCB8E"], cream: "#E2E8C8", drip: "#D6336C" },
+    { id: "choco", name: "Шоколад-вишня", desc: "Влажный шоколадный бисквит, вишня, ганаш на бельгийском шоколаде", kg: 2300, layers: ["#3B2418","#8E1B2E","#3B2418","#E9D9C8","#3B2418"], cream: "#6B4634", drip: "#2A1810" },
+    { id: "snickers", name: "Сникерс", desc: "Шоколадный бисквит, солёная карамель, жареный арахис", kg: 2400, layers: ["#5A3A2A","#C98A3C","#5A3A2A","#E9D9C8","#5A3A2A"], cream: "#EADCC9", drip: "#C98A3C" },
+    { id: "honey", name: "Медовик", desc: "Тонкие медовые коржи и сметанный крем, как у бабушки", kg: 2000, layers: ["#D9A75B","#F3E6CF","#D9A75B","#F3E6CF","#D9A75B","#F3E6CF","#D9A75B"], cream: "#F3E6CF", drip: "#D9A75B" },
+    { id: "carrot", name: "Морковный", desc: "Пряный бисквит с грецким орехом, крем-чиз, апельсин", kg: 2200, layers: ["#C8743A","#F4EDE4","#C8743A","#F4EDE4","#C8743A"], cream: "#F4EDE4", drip: "#E3A35A" }
+  ];
+  const DECOR = [
+    { id: "berries", name: "Свежие ягоды", price: 600 },
+    { id: "text", name: "Надпись", price: 0 },
+    { id: "figure", name: "Фигурка", price: 900 },
+    { id: "flowers", name: "Живые цветы", price: 800 },
+    { id: "print", name: "Сахарная печать", price: 400 }
+  ];
+  const WD = ["вс","пн","вт","ср","чт","пт","сб"];
+  const MON = ["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"];
+  const days = Array.from({ length: 12 }, (_, i) => { const d = new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate() + i + 2); return d; });
+  const state = { guests: 12, fill: "pistachio", decor: new Set(["berries", "text"]), day: 2 };
+
+  // Filling cards
+  $("fillingList").innerHTML = FILLINGS.map(f => `
+    <article class="filling">
+      <div class="slice" aria-hidden="true"><i class="cream" style="background:${f.cream}"></i>${f.layers.map(c => `<i style="background:${c}"></i>`).join("")}</div>
+      <div class="filling-head"><h3>${f.name}</h3><span class="kg">${rub(f.kg)}/кг</span></div>
+      <p>${f.desc}</p>
+      <button type="button" class="pick" data-pick="${f.id}">Собрать с этой начинкой</button>
+    </article>`).join("");
+
+  $("fillOpts").innerHTML = FILLINGS.map(f => `<button type="button" class="opt" data-fill="${f.id}"><span class="dot" style="background:${f.layers[0]}"></span>${f.name}</button>`).join("");
+  $("decorOpts").innerHTML = DECOR.map(d => `<button type="button" class="opt" data-decor="${d.id}">${d.name}<small>${d.price ? "+" + rub(d.price) : "бесплатно"}</small></button>`).join("");
+  $("dates").innerHTML = days.map((d, i) => `<button type="button" class="date" data-day="${i}"><small>${WD[d.getDay()]}</small><b>${d.getDate()}</b></button>`).join("");
+
+  function calc() {
+    const weight = Math.max(1.5, Math.ceil(state.guests * 0.15 * 2) / 2);
+    const tiers = weight <= 3 ? 1 : weight <= 6 ? 2 : 3;
+    const f = FILLINGS.find(x => x.id === state.fill);
+    const decor = DECOR.filter(d => state.decor.has(d.id));
+    const total = weight * f.kg + decor.reduce((a, d) => a + d.price, 0) + (tiers > 1 ? (tiers - 1) * 500 : 0);
+    return { weight, tiers, f, decor, total };
+  }
+
+  function cakeSVG({ tiers, f }) {
+    const sizes = [[260, 92], [190, 80], [124, 70]];
+    let y = 310, out = "";
+    out += `<ellipse cx="200" cy="318" rx="170" ry="20" fill="var(--plate)" stroke="var(--line)" stroke-width="2"/>`;
+    out += `<ellipse cx="200" cy="313" rx="150" ry="13" fill="rgba(0,0,0,.06)"/>`;
+    let topY = 0, topW = 0;
+    for (let t = 0; t < tiers; t++) {
+      const [w, h] = sizes[t];
+      const x = 200 - w / 2, top = y - h;
+      out += `<g class="cake-tier">`;
+      out += `<rect x="${x}" y="${top}" width="${w}" height="${h}" rx="12" fill="${f.cream}" stroke="rgba(0,0,0,.08)" stroke-width="1.5"/>`;
+      // drip edge
+      let d = `M${x} ${top + 12} Q${x} ${top} ${x + 12} ${top} L${x + w - 12} ${top} Q${x + w} ${top} ${x + w} ${top + 12} L${x + w} ${top + 18}`;
+      const n = Math.round(w / 26);
+      for (let k = n; k > 0; k--) {
+        const x2 = x + (w / n) * (k - 1);
+        const depth = 18 + ((k * 7 + t * 5) % 3) * 9;
+        d += ` Q${x2 + w / n / 2} ${top + depth + 10} ${x2} ${top + 18}`;
+      }
+      d += " Z";
+      out += `<path d="${d}" fill="${f.drip}"/>`;
+      out += `<rect x="${x + 10}" y="${top + 30}" width="6" height="${h - 42}" rx="3" fill="rgba(255,255,255,.35)"/>`;
+      out += `</g>`;
+      topY = top; topW = w; y = top;
+    }
+    return { out, topY, topW };
+  }
+
+  function renderCake(svgId, c) {
+    let { out, topY, topW } = cakeSVG(c);
+    const has = id => state.decor.has(id);
+    if (has("berries")) {
+      const n = Math.max(3, Math.round(topW / 34));
+      for (let i = 0; i < n; i++) {
+        const cx = 200 - topW / 2 + 18 + (topW - 36) * (i / (n - 1));
+        out += `<circle cx="${cx}" cy="${topY - 7}" r="9" fill="#C8285E"/><circle cx="${cx - 3}" cy="${topY - 10}" r="2.5" fill="rgba(255,255,255,.6)"/>`;
+        if (i % 2) out += `<circle cx="${cx + 10}" cy="${topY - 4}" r="6" fill="#3A2A6B"/>`;
+      }
+    }
+    if (has("flowers")) {
+      [[-topW / 2 + 22, 0], [topW / 2 - 24, 4]].forEach(([dx, dy]) => {
+        const cx = 200 + dx, cy = topY - 14 + dy;
+        for (let p = 0; p < 6; p++) { const a = p * Math.PI / 3; out += `<circle cx="${cx + Math.cos(a) * 9}" cy="${cy + Math.sin(a) * 9}" r="7" fill="#F4A6C0"/>`; }
+        out += `<circle cx="${cx}" cy="${cy}" r="5" fill="#F2C94C"/>`;
+      });
+    }
+    if (has("figure")) {
+      out += `<g transform="translate(200 ${topY - 2})"><path d="M0 -58 L10 -34 L36 -32 L16 -16 L22 10 L0 -4 L-22 10 L-16 -16 L-36 -32 L-10 -34 Z" fill="#F2C94C" stroke="#C99A1E" stroke-width="2" stroke-linejoin="round" transform="scale(.75) translate(0 -6)"/></g>`;
+    }
+    if (has("text")) {
+      const tx = has("figure") ? 200 + topW / 2 - 6 : 200;
+      out += `<line x1="${tx}" y1="${topY}" x2="${tx}" y2="${topY - 74}" stroke="#A88A5A" stroke-width="3"/>`;
+      out += `<path d="M${tx} ${topY - 74} l-46 -2 l6 13 l-6 13 l46 -2 z" fill="#FFFFFF" stroke="#C8285E" stroke-width="1.5"/>`;
+      out += `<text x="${tx - 22}" y="${topY - 58}" text-anchor="middle" font-family="Caveat, cursive" font-size="15" font-weight="600" fill="#C8285E">Ура!</text>`;
+    }
+    if (has("print")) {
+      const t = c.tiers - 1, [w, h] = [[260, 92], [190, 80], [124, 70]][t];
+      out += `<circle cx="200" cy="${topY + h / 2 + 8}" r="${Math.min(26, h / 2 - 12)}" fill="#FFFFFF" stroke="rgba(0,0,0,.1)"/><path d="M190 ${topY + h / 2 + 12} q10 -14 20 0" stroke="#C8285E" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="193" cy="${topY + h / 2 + 2}" r="2.5" fill="#3B2418"/><circle cx="207" cy="${topY + h / 2 + 2}" r="2.5" fill="#3B2418"/>`;
+    }
+    $(svgId).innerHTML = out;
+  }
+
+  function render() {
+    const c = calc();
+    $("guestsOut").textContent = `${state.guests} ${plural(state.guests, ["человек", "человека", "человек"])}`;
+    document.querySelectorAll("[data-fill]").forEach(b => b.setAttribute("aria-pressed", b.dataset.fill === state.fill));
+    document.querySelectorAll("[data-decor]").forEach(b => b.setAttribute("aria-pressed", state.decor.has(b.dataset.decor)));
+    document.querySelectorAll("[data-day]").forEach(b => b.setAttribute("aria-pressed", +b.dataset.day === state.day));
+    $("rWeight").textContent = c.weight.toString().replace(".", ",") + " кг";
+    $("rTiers").textContent = c.tiers === 1 ? "1 ярус" : `${c.tiers} яруса (+${rub((c.tiers - 1) * 500)})`;
+    $("rFill").textContent = `${c.f.name}, ${rub(c.f.kg)}/кг`;
+    $("rDecor").textContent = c.decor.length ? c.decor.map(d => d.name.toLowerCase()).join(", ") : "без декора";
+    const d = days[state.day];
+    $("rDate").textContent = `${d.getDate()} ${MON[d.getMonth()]}, ${WD[d.getDay()]}`;
+    $("rTotal").textContent = rub(c.total);
+    renderCake("cake", c);
+    renderCake("heroCake", c);
+  }
+  function plural(n, f) { const m10 = n % 10, m100 = n % 100; return m10 === 1 && m100 !== 11 ? f[0] : m10 >= 2 && m10 <= 4 && (m100 < 10 || m100 >= 20) ? f[1] : f[2]; }
+
+  $("guests").addEventListener("input", e => { state.guests = +e.target.value; render(); });
+  document.addEventListener("click", e => {
+    const f = e.target.closest("[data-fill]"); if (f) { state.fill = f.dataset.fill; render(); return; }
+    const dc = e.target.closest("[data-decor]"); if (dc) { const id = dc.dataset.decor; state.decor.has(id) ? state.decor.delete(id) : state.decor.add(id); render(); return; }
+    const dy = e.target.closest("[data-day]"); if (dy) { state.day = +dy.dataset.day; render(); return; }
+    const p = e.target.closest("[data-pick]"); if (p) { state.fill = p.dataset.pick; render(); $("builder").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); }
+  });
+
+  $("phone").addEventListener("input", e => {
+    let d = e.target.value.replace(/\D/g, "");
+    if (d.startsWith("8")) d = "7" + d.slice(1);
+    if (!d.startsWith("7")) d = "7" + d;
+    const p = d.slice(1, 11);
+    let out = "+7";
+    if (p.length) out += " (" + p.slice(0, 3);
+    if (p.length >= 3) out += ")";
+    if (p.length > 3) out += " " + p.slice(3, 6);
+    if (p.length > 6) out += "-" + p.slice(6, 8);
+    if (p.length > 8) out += "-" + p.slice(8, 10);
+    e.target.value = out; e.target.classList.remove("invalid");
+  });
+  $("name").addEventListener("input", e => e.target.classList.remove("invalid"));
+  $("orderForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const name = $("name").value.trim(), digits = $("phone").value.replace(/\D/g, "");
+    let msg = "";
+    if (!name) { msg = "Укажите имя."; $("name").classList.add("invalid"); }
+    else if (digits.length < 11) { msg = "Проверьте номер: нужно 10 цифр после +7."; $("phone").classList.add("invalid"); }
+    if (msg) { $("err").textContent = msg; $("err").hidden = false; return; }
+    const c = calc(), d = days[state.day];
+    $("formFields").innerHTML = `<div class="success"><b>${name}, заказ принят!</b><p>${c.f.name}, ${c.weight.toString().replace(".", ",")} кг к ${d.getDate()} ${MON[d.getMonth()]}. Напишу на ${$("phone").value} в течение часа, чтобы согласовать эскиз.</p></div>`;
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
